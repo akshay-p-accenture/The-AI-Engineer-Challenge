@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  .dark {
+    /* Aurora — one sans face, cool indigo light, generous contrast. */
+    --background: 230 20% 5%;
+    --foreground: 220 22% 96%;
+
+    --card: 230 18% 8%;
+    --card-foreground: 220 22% 96%;
+
+    --popover: 230 20% 7%;
+    --popover-foreground: 220 22% 96%;
+
+    --primary: 243 88% 74%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 230 16% 13%;
+    --secondary-foreground: 220 18% 92%;
+
+    --muted: 230 16% 12%;
+    --muted-foreground: 222 13% 66%;
+
+    --accent: 202 88% 72%;
+    --accent-foreground: 210 45% 10%;
+
+    --destructive: 356 72% 63%;
+    --destructive-foreground: 0 0% 100%;
+
+    --signal: 158 62% 60%;
+
+    --border: 230 14% 16%;
+    --input: 230 14% 16%;
+    --ring: 243 88% 74%;
+
+    --radius: 1rem;
+
+    --hairline: 0 0% 100% / 0.07;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior: none;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.32);
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring) / 0.7);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* The one surface treatment: quiet fill, hairline edge, soft top sheen. */
+  .surface {
+    background: hsl(0 0% 100% / 0.028);
+    border: 1px solid hsl(var(--hairline));
+    box-shadow: inset 0 1px 0 0 hsl(0 0% 100% / 0.04);
+  }
+
+  .surface-hover {
+    @apply transition-all duration-200;
+  }
+  .surface-hover:hover {
+    background: hsl(0 0% 100% / 0.055);
+    border-color: hsl(0 0% 100% / 0.11);
+  }
+
+  .glass {
+    background: hsl(230 18% 9% / 0.72);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid hsl(var(--hairline));
+  }
+
+  /* Section label: readable at a glance, never shouty. */
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-label text-muted-foreground/80;
+  }
+
+  .gradient-text {
+    background-image: linear-gradient(
+      100deg,
+      hsl(0 0% 100%) 0%,
+      hsl(243 88% 86%) 46%,
+      hsl(202 88% 82%) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(230 14% 24%) transparent;
+  }
+  .scroll-slim::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .scroll-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background-color: hsl(230 14% 22%);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  .scroll-slim:hover::-webkit-scrollbar-thumb {
+    background-color: hsl(230 14% 30%);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* ── Markdown surface ─────────────────────────────────────────────────── */
+.md {
+  @apply text-[15.5px] leading-[1.75] text-foreground/90;
+}
+.md > * + * {
+  @apply mt-4;
+}
+.md h1,
+.md h2,
+.md h3,
+.md h4 {
+  @apply font-semibold tracking-[-0.01em] text-foreground;
+}
+.md h1 {
+  @apply text-xl;
+}
+.md h2 {
+  @apply text-lg;
+}
+.md h3 {
+  @apply text-base;
+}
+.md p {
+  @apply text-pretty;
+}
+.md strong {
+  @apply font-semibold text-foreground;
+}
+.md a {
+  @apply text-primary underline decoration-primary/35 underline-offset-4 transition-colors hover:decoration-primary;
+}
+.md ul,
+.md ol {
+  @apply space-y-2 pl-5;
+}
+.md ul {
+  @apply list-disc marker:text-primary/60;
+}
+.md ol {
+  @apply list-decimal marker:text-muted-foreground;
+}
+.md li > ul,
+.md li > ol {
+  @apply mt-2;
+}
+.md blockquote {
+  @apply border-l-2 border-primary/40 pl-4 text-foreground/80;
+}
+.md hr {
+  @apply border-t border-white/[0.07];
+}
+.md code:not(pre code) {
+  @apply rounded-md border border-white/[0.08] bg-white/[0.05] px-1.5 py-0.5 font-mono text-[0.85em] text-accent;
+}
+.md table {
+  @apply w-full border-collapse text-sm;
+}
+.md th {
+  @apply border-b border-white/10 pb-2 pr-4 text-left text-[11px] font-medium uppercase tracking-label text-muted-foreground;
+}
+.md td {
+  @apply border-b border-white/[0.05] py-2 pr-4 align-top;
+}
+.md img {
+  @apply rounded-xl border border-white/[0.07];
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
