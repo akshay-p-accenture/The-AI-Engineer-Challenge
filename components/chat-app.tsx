@@ -11,13 +11,30 @@ export function ChatApp() {
   const chat = useChat()
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [insightsOpen, setInsightsOpen] = useState(true)
+  const [mounted, setMounted] = useState(false)
 
-  // Collapse side panels by default on smaller screens
+  // Collapse side panels by default on smaller screens, and defer the first
+  // render to the client. The app is built entirely from ephemeral client
+  // state (timestamps, ids) that cannot be reproduced deterministically on the
+  // server, so we render a static shell during SSR to avoid hydration drift.
   useEffect(() => {
+    setMounted(true)
     if (typeof window === "undefined") return
     if (window.innerWidth < 1024) setSidebarOpen(false)
     if (window.innerWidth < 1280) setInsightsOpen(false)
   }, [])
+
+  if (!mounted) {
+    return (
+      <div className="relative flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-background text-foreground">
+        <div className="app-aurora" aria-hidden />
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-9 w-9 animate-pulse rounded-xl bg-gradient-to-br from-primary/40 to-accent/30" />
+          <span className="text-xs text-muted-foreground">Loading Aurora…</span>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <TooltipProvider delayDuration={250}>
